@@ -1,11 +1,8 @@
 package optimal_route.view;
-
-
-import optimal_route.contract.IStationNodePersistency;
 import optimal_route.contract.StationNode;
-
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class EditBusline extends JFrame {
@@ -61,4 +58,5 @@ public class EditBusline extends JFrame {
     public NodeTool2 getNodeTool() {
         return nodeTool2;
     }
+    public void AddSetListener(ActionListener listener){set.addActionListener(listener);}
 }

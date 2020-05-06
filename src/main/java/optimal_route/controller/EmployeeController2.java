@@ -24,6 +24,7 @@ public class EmployeeController2 {
     TravelerView2 travelerView;
     private ObjectInputStream response;
     private ObjectOutputStream request;
+    EditBusline editBusline;
     public EmployeeController2(TravelerView2 travelerView, EmployeeView2 view, IStationNodePersistency persistency,ObjectInputStream ois,ObjectOutputStream oos) {
         this.response=ois;
         this.request=oos;
@@ -108,7 +109,8 @@ public class EmployeeController2 {
                 List<StationNode> data = persistency.getAll();
                 if(!view.getBusLinesListing2().getList().isSelectionEmpty()) {
                     String busName = view.getBusLinesListing2().getList().getSelectedValue();
-                    new EditBusline(busName,data);
+                    editBusline = new EditBusline(busName,data);
+                    editBusline.AddSetListener(new SetListener());
                 }else {
                     JOptionPane.showMessageDialog(null,"No selected busline");
                 }
@@ -119,6 +121,42 @@ public class EmployeeController2 {
 
         }
     }
+
+    class SetListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(editBusline!=null){
+                try {
+                    String newName = editBusline.getBusName().getText();
+                    String oldName = view.getBusLinesListing2().getList().getSelectedValue().substring(7);
+                    List<StationNode> dataToUpdate = editBusline.getBusLinesArea().getDrawData();
+                    if(!newName.equals("") && dataToUpdate!=null) {
+                        for (StationNode stationNode : dataToUpdate) {
+                            StationNode stationNode1 = persistency.getById(stationNode.getId());
+                            if(stationNode1!=null && stationNode1.getBuslinesPassingThrough().contains(oldName)) {
+                                stationNode1.setApparentCoordinate(stationNode.getApparentCoordinate());
+                                stationNode1.getBuslinesPassingThrough().remove(oldName);
+                                stationNode1.getBuslinesPassingThrough().add(newName);
+                                persistency.update(stationNode1);
+                            }
+                        }
+                        update();
+                        travelerView.getMapArea().updateData();
+                    }
+                } catch (RemoteException remoteException) {
+                    remoteException.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
 
 
     class RmvBusListener implements ActionListener {

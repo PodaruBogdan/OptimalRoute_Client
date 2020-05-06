@@ -43,18 +43,17 @@ public class BusLinesArea extends JPanel implements MouseMotionListener, MouseLi
         }
     }
 
+    public List<StationNode> getDrawData() {
+        return drawData;
+    }
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if(currentBus!=null) {
             for(StationNode station: drawData){
                 if(station.getBuslinesPassingThrough().contains(currentBus.substring(7))) {
                     Point c = null;
-                    if(nodeToDrag.get(station)==true){
-                        System.err.println("Finally true");
-                        c = new Point(X,Y);
-                    }else {
-                        c = station.getApparentCoordinate();
-                    }
+                    c = station.getApparentCoordinate();
                     g.setColor(Color.BLACK);
                     g.drawOval((int)c.getX() - 20, (int)c.getY() - 20, 40, 40);
                     g.fillOval((int)c.getX() - 20, (int)c.getY() - 20, 40, 40);
@@ -111,7 +110,12 @@ public class BusLinesArea extends JPanel implements MouseMotionListener, MouseLi
         if(canDrag) {
             X = e.getX();
             Y = e.getY();
+            for(StationNode stationNode:drawData){
+                if(nodeToDrag.get(stationNode)==true)
+                    stationNode.setApparentCoordinate(new Point(X,Y));
+            }
         }
+        this.repaint();
     }
     @Override
     public void mouseMoved(MouseEvent e) {
@@ -135,7 +139,7 @@ public class BusLinesArea extends JPanel implements MouseMotionListener, MouseLi
             Point p = getOval(e.getX(), e.getY(),clicks);
             System.err.println("Mouse was pressed at :"+p);
             for(StationNode stationNode:drawData) {
-                if(stationNode.getApparentCoordinate()==p){
+                if(stationNode.getApparentCoordinate().x==p.x && p.y==stationNode.getApparentCoordinate().y){
                     nodeToDrag.replace(stationNode,true);
                 }
             }
