@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<route_info>
+  <route_info>
+    <cost>450</cost>
+    <station name="s1">
+      <id>3</id>
+      <apparent_coordinate>java.awt.Point[x=714,y=135]</apparent_coordinate>
+      <neighbors>
+        <neighbor>s2</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>1</busline>
+      </buslines>
+    </station>
+    <station name="s2">
+      <id>2</id>
+      <apparent_coordinate>java.awt.Point[x=286,y=274]</apparent_coordinate>
+      <neighbors>
+        <neighbor>s1</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>1</busline>
+      </buslines>
+    </station>
+  </route_info>
+  <route_info>
+    <cost>450</cost>
+    <station name="s1">
+      <id>3</id>
+      <apparent_coordinate>java.awt.Point[x=714,y=135]</apparent_coordinate>
+      <neighbors>
+        <neighbor>s2</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>1</busline>
+      </buslines>
+    </station>
+    <station name="s2">
+      <id>2</id>
+      <apparent_coordinate>java.awt.Point[x=286,y=274]</apparent_coordinate>
+      <neighbors>
+        <neighbor>s1</neighbor>
+        <neighbor>s3</neighbor>
+        <neighbor>s4</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>1</busline>
+        <busline>2</busline>
+      </buslines>
+    </station>
+  </route_info>
+  <route_info>
+    <cost>369</cost>
+    <station name="s2">
+      <id>2</id>
+      <apparent_coordinate>java.awt.Point[x=286,y=274]</apparent_coordinate>
+      <neighbors>
+        <neighbor>s1</neighbor>
+        <neighbor>s3</neighbor>
+        <neighbor>s4</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>1</busline>
+        <busline>2</busline>
+      </buslines>
+    </station>
+    <station name="s4">
+      <id>5</id>
+      <apparent_coordinate>java.awt.Point[x=50,y=558]</apparent_coordinate>
+      <neighbors>
+        <neighbor>s2</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>2</busline>
+      </buslines>
+    </station>
+  </route_info>
+</route_info>

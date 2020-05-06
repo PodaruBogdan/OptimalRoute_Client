@@ -1,0 +1,62 @@
+[
+  {
+    "cost": "369"
+  },
+  {
+    "s2": [
+      {
+        "id": "2"
+      },
+      {
+        "apparent_coordinate": "java.awt.Point[x\u003d286,y\u003d274]"
+      },
+      {
+        "neighbors": [
+          {
+            "neighbor": "s1"
+          },
+          {
+            "neighbor": "s3"
+          },
+          {
+            "neighbor": "s4"
+          }
+        ]
+      },
+      {
+        "buslines": [
+          {
+            "busline": "1"
+          },
+          {
+            "busline": "2"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "s4": [
+      {
+        "id": "5"
+      },
+      {
+        "apparent_coordinate": "java.awt.Point[x\u003d50,y\u003d558]"
+      },
+      {
+        "neighbors": [
+          {
+            "neighbor": "s2"
+          }
+        ]
+      },
+      {
+        "buslines": [
+          {
+            "busline": "2"
+          }
+        ]
+      }
+    ]
+  }
+]
