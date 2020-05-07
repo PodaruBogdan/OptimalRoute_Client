@@ -5,16 +5,19 @@ import optimal_route.contract.IStationNodePersistency;
 import optimal_route.contract.StationNode;
 import optimal_route.view.*;
 import org.apache.commons.lang3.tuple.Pair;
+import report.CSVReport;
+import report.Child;
+import report.JSONReport;
+import report.XMLReport;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.util.*;
@@ -25,20 +28,63 @@ public class EmployeeController {
     TravelerView travelerView;
     private ObjectInputStream response;
     private ObjectOutputStream request;
-    public EmployeeController(TravelerView travelerView, EmployeeView view, IStationNodePersistency persistency,ObjectInputStream ois,ObjectOutputStream oos) {
+    EditBusline editBusline;
+    public EmployeeController(TravelerView travelerView, EmployeeView view, IStationNodePersistency persistency, ObjectInputStream ois, ObjectOutputStream oos){
         this.response=ois;
         this.request=oos;
         this.view = view;
         this.travelerView = travelerView;
         this.persistency = persistency;
-        view.getNodeTool().AddSaveListener(new SaveListener());
-        view.getNodeTool().AddAddLinkListener(new AddLinkListener());
-        view.getNodeTool().AddAddListener(new AddListener());
-        view.getNodeTool().AddRemoveListener(new RemoveListener());
-        view.getNodeTool().AddOptimalListener(new SearchOptimalListener());
+        update();
+        view.getBusLinesListing2().addListListener(new CustomListListener());
+        view.getBuslineTool().AddAddBusListener(new AddBusListener());
+        view.getBuslineTool().AddRmvBusListener(new RmvBusListener());
+        view.getBuslineTool().addEdtBusListener(new EdtBusListener());
+        view.getBuslineTool().AddOptimalListener(new SearchOptimalListener());
 
-        //view.getNodeTool().AddSaveMapListener(new SaveMapListener());
     }
+
+    void update(){
+        List<StationNode> stationNodes = null;
+        try {
+            stationNodes = persistency.getAll();
+            view.getBusLinesArea().setDrawData(stationNodes);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        if(stationNodes!=null) {
+            DefaultListModel model = (DefaultListModel) view.getBusLinesListing2().getList().getModel();
+            model.clear();
+            for (String s : getStationNames(stationNodes)) {
+                if(!model.contains("Line : "+s))
+                    model.addElement("Line : " + s);
+            }
+        }else{
+            System.out.println("Model null!!!");
+        }
+        updateTraveler();
+    }
+
+    public void updateTraveler(){
+        List<StationNode> stationNodes = null;
+        try {
+            stationNodes = persistency.getAll();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        if(stationNodes!=null) {
+            DefaultListModel model = (DefaultListModel) travelerView.getBusLinesListing().getList().getModel();
+            model.clear();
+            for (String s : getStationNames(stationNodes)) {
+                if(!model.contains("Line : "+s))
+                    model.addElement("Line : " + s);
+            }
+        }else{
+            System.out.println("Model null!!!");
+        }
+    }
+
+
 
     private List<String> getStationNames(List<StationNode> stations) {
         List<String> result = new ArrayList<>();
@@ -53,44 +99,120 @@ public class EmployeeController {
         return result;
     }
 
-    public EmployeeView getView() {
-        return view;
-    }
 
-    class AddLinkListener implements ActionListener {
+
+    class AddBusListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
-            MapArea.toggleLink();
+            MapArea.toggleEditable();
+            new AddBusline(persistency,view,travelerView);
+
         }
     }
-
-    class AddListener implements ActionListener {
+    class EdtBusListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            MapArea.toggleAdd();
-        }
-    }
-
-    class SaveListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            List<StationNode> list = view.getMapArea().getData();
-
             try {
-                if(list!=null) {
-                    persistency.writeAll(list);
+                List<StationNode> data = persistency.getAll();
+                if(!view.getBusLinesListing2().getList().isSelectionEmpty()) {
+                    String busName = view.getBusLinesListing2().getList().getSelectedValue();
+                    editBusline = new EditBusline(busName,data);
+                    editBusline.AddSetListener(new SetListener());
+                }else {
+                    JOptionPane.showMessageDialog(null,"No selected busline");
                 }
             } catch (RemoteException remoteException) {
                 remoteException.printStackTrace();
             }
-            travelerView.getBusLinesArea().setDrawData(list);
-            DefaultListModel<String> model = new DefaultListModel<>();
-            for (String s : getStationNames(list)) {
-                model.addElement("Line : " + s);
+
+
+        }
+    }
+
+    class SetListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if(editBusline!=null){
+                try {
+                    String newName = editBusline.getBusName().getText();
+                    String oldName = view.getBusLinesListing2().getList().getSelectedValue().substring(7);
+                    List<StationNode> dataToUpdate = editBusline.getBusLinesArea().getDrawData();
+                    if(!newName.equals("") && dataToUpdate!=null) {
+                        for (StationNode stationNode : dataToUpdate) {
+                            StationNode stationNode1 = persistency.getById(stationNode.getId());
+                            if(stationNode1!=null && stationNode1.getBuslinesPassingThrough().contains(oldName)) {
+                                stationNode1.setApparentCoordinate(stationNode.getApparentCoordinate());
+                                stationNode1.getBuslinesPassingThrough().remove(oldName);
+                                stationNode1.getBuslinesPassingThrough().add(newName);
+                                persistency.update(stationNode1);
+                            }
+                        }
+                        update();
+                        travelerView.getMapArea().updateData();
+                    }
+                } catch (RemoteException remoteException) {
+                    remoteException.printStackTrace();
+                }
             }
-            travelerView.getBusLinesListing().getList().setModel(model);
-            MapArea.toggleSave();
+        }
+    }
+
+
+
+
+
+
+
+
+
+    class RmvBusListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            List<StationNode> stationNodes = null;
+            try {
+                stationNodes = persistency.getAll();
+                if(!view.getBusLinesListing2().getList().isSelectionEmpty()) {
+                    String busName = view.getBusLinesListing2().getList().getSelectedValue().substring(7);
+                    System.out.println(busName);
+                    for (Iterator<StationNode>it = stationNodes.iterator();it.hasNext();) {
+                        StationNode stationNode= it.next();
+                        int numOfLines = stationNode.getBuslinesPassingThrough().size();
+                        if (numOfLines <= 1 && stationNode.getBuslinesPassingThrough().contains(busName)) {
+                            StationNode s = persistency.getById(stationNode.getId());
+                            if(s!=null) {
+                                persistency.delete(stationNode.getId());
+                                it.remove();
+                            }
+                        } else if (numOfLines >1 && stationNode.getBuslinesPassingThrough().contains(busName)) {
+                            StationNode stationNode1 = persistency.getById(stationNode.getId());
+                            if(stationNode1!=null) {
+                                stationNode1.getBuslinesPassingThrough().remove(busName);
+                                persistency.update(stationNode1);
+                            }
+                        }
+                    }
+                    update();
+                    travelerView.getMapArea().updateData();
+                }else{
+                    JOptionPane.showMessageDialog(null,"No busline was selected!");
+                }
+            } catch (RemoteException f) {
+                f.printStackTrace();
+            }
+        }
+    }
+
+
+
+
+    class CustomListListener implements ListSelectionListener {
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            view.getBusLinesArea().setSelectedBus(view.getBusLinesListing2().getList().getSelectedValue());
         }
     }
 
@@ -100,7 +222,7 @@ public class EmployeeController {
             root.setType("route_info");
             StationNode end=null;
             for(int i=0;i<stat.size();i++) {
-                if (stat.get(i).getStationName().equals(view.getNodeTool().getToField().getText())) {
+                if (stat.get(i).getStationName().equals(view.getBuslineTool().getToField().getText())) {
                     end = stat.get(i);
                     break;
                 }
@@ -143,8 +265,8 @@ public class EmployeeController {
         public void actionPerformed(ActionEvent e) {
             Pair<Stack<StationNode>, HashMap<StationNode,Integer>> list= null;
             try {
-                String source = view.getNodeTool().getFromField().getText();
-                String destination = view.getNodeTool().getToField().getText();
+                String source = view.getBuslineTool().getFromField().getText();
+                String destination = view.getBuslineTool().getToField().getText();
                 Object[] msg = new Object[]{"dijkstra", 3, true, source, destination};
                 request.writeObject(msg);
                 list = (Pair<Stack<StationNode>, HashMap<StationNode, Integer>>) response.readObject();
@@ -178,7 +300,7 @@ public class EmployeeController {
                         try {
                             StationNode end = null;
                             for (int i = 0; i < stat.size(); i++) {
-                                if (stat.get(i).getStationName().equals(view.getNodeTool().getToField().getText())) {
+                                if (stat.get(i).getStationName().equals(view.getBuslineTool().getToField().getText())) {
                                     end = stat.get(i);
                                     break;
                                 }
@@ -213,19 +335,7 @@ public class EmployeeController {
 
     }
 
-    class SaveMapListener implements ActionListener {
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
 
-        }
-    }
-
-    class RemoveListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            MapArea.toggleRmv();
-        }
-    }
 
 }

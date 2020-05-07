@@ -4,9 +4,7 @@ import optimal_route.contract.Account;
 import optimal_route.contract.IAccountPersistency;
 import optimal_route.contract.IStationNodePersistency;
 import optimal_route.contract.StationNode;
-import optimal_route.view.AdminView;
-import optimal_route.view.EmployeeView;
-import optimal_route.view.TravelerView;
+import optimal_route.view.*;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -16,9 +14,6 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,32 +29,39 @@ public class TravelerController {
     private ObjectInputStream response ;
 
 
-    public TravelerController(TravelerView view, IAccountPersistency accountsPersistency, IStationNodePersistency stationsPersistency,ObjectInputStream ois,ObjectOutputStream oos){
+    public TravelerController(TravelerView view, IAccountPersistency accountsPersistency, IStationNodePersistency stationsPersistency, ObjectInputStream ois, ObjectOutputStream oos){
         this.response=ois;
         this.request=oos;
         this.view=view;
         this.accountsPersistency=accountsPersistency;
         this.stationsPersistency=stationsPersistency;
+        update();
+        view.getBusLinesListing().addListListener(new CustomListListener());
+        view.getBusLinesListing().addSearchListenr(new SearchListener());
+        view.getLoginArea().addLoginListener(new LoginListener());
+    }
+
+    public void update(){
         List<StationNode> stationNodes = null;
         try {
             stationNodes = stationsPersistency.getAll();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-        view.getBusLinesArea().setDrawData(stationNodes);
-
         if(stationNodes!=null) {
+            DefaultListModel model = (DefaultListModel) view.getBusLinesListing().getList().getModel();
+            model.clear();
             for (String s : getStationNames(stationNodes)) {
-                ((DefaultListModel) view.getBusLinesListing().getList().getModel()).addElement("Line : " + s);
+                if(!model.contains("Line : "+s))
+                    model.addElement("Line : " + s);
             }
         }else{
             System.out.println("Model null!!!");
         }
-
-        view.getBusLinesListing().addListListener(new CustomListListener());
-        view.getBusLinesListing().addSearchListenr(new SearchListener());
-        view.getLoginArea().addLoginListener(new LoginListener());
     }
+
+
+
     private List<String> getStationNames(List<StationNode> stations){
         if(stations==null){
             return null;
@@ -82,7 +84,7 @@ public class TravelerController {
     class CustomListListener implements ListSelectionListener{
         @Override
         public void valueChanged(ListSelectionEvent e) {
-            view.getBusLinesArea().setSelectedBus(view.getBusLinesListing().getList().getSelectedValue());
+            view.getMapArea().setCurrentBus(view.getBusLinesListing().getList().getSelectedValue());
         }
     }
     class SearchListener implements ActionListener{
@@ -122,7 +124,7 @@ public class TravelerController {
                     if(account.getRole().equals("admin")) {
                         new AdminController(new AdminView(),accountsPersistency);
                     }else
-                        new EmployeeController(view,new EmployeeView(stationsPersistency),stationsPersistency,response,request);
+                        new EmployeeController(view,new EmployeeView(),stationsPersistency,response,request);
                     break;
                 }
             }

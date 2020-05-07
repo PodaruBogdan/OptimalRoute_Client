@@ -3,7 +3,6 @@ package optimal_route.view;
 
 import optimal_route.contract.IStationNodePersistency;
 import optimal_route.contract.StationNode;
-import optimal_route.controller.EmployeeController;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -18,9 +17,9 @@ public class AddBusline extends JFrame {
     private MapArea mapArea;
     private NodeTool2 nodeTool2;
     private IStationNodePersistency persistency;
-    private  EmployeeView2 employeeView;
-    private TravelerView2 travelerView;
-    public AddBusline(IStationNodePersistency persistency,EmployeeView2 view,TravelerView2 travelerView){
+    private EmployeeView employeeView;
+    private TravelerView travelerView;
+    public AddBusline(IStationNodePersistency persistency, EmployeeView view, TravelerView travelerView){
         this.employeeView=view;
         this.travelerView=travelerView;
         this.persistency=persistency;

@@ -1,5 +1,6 @@
 package optimal_route.view;
 
+
 import optimal_route.contract.IStationNodePersistency;
 
 import javax.swing.*;
@@ -7,15 +8,16 @@ import java.awt.*;
 
 
 public class TravelerView extends JFrame {
-    private BusLinesArea busLinesArea;
     private BusLinesListing busLinesListing;
     private LoginArea loginArea;
-    public TravelerView(){
+    private MapArea mapArea;
+    private IStationNodePersistency stationNodePersistency;
+    public TravelerView(IStationNodePersistency stationNodePersistency){
+        this.stationNodePersistency=stationNodePersistency;
         ImageIcon img = new ImageIcon("bus.jpg");
         this.setIconImage(img.getImage());
         this.setTitle("Busline App");
-       // MapArea mapArea = new MapArea(stationNodePersistency);
-        busLinesArea = new BusLinesArea();
+        mapArea = new MapArea(stationNodePersistency);
         busLinesListing = new BusLinesListing();
         loginArea = new LoginArea();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,13 +26,13 @@ public class TravelerView extends JFrame {
         panel.add(busLinesListing);
         panel.add(Box.createRigidArea(new Dimension(20,80)));
         panel.add(loginArea);
-        this.setContentPane(new DualView(busLinesArea, panel));
+        this.setContentPane(new DualView(mapArea, panel));
         this.pack();
         this.setVisible(true);
     }
 
-    public BusLinesArea getBusLinesArea() {
-        return busLinesArea;
+    public MapArea getMapArea() {
+        return mapArea;
     }
 
     public BusLinesListing getBusLinesListing() {
