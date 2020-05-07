@@ -1,59 +1,179 @@
 [
   {
-    "cost": "369"
+    "cost": "990"
   },
   {
-    "s2": [
+    "Zorilor": [
       {
-        "id": "2"
+        "id": "1"
       },
       {
-        "apparent_coordinate": "java.awt.Point[x\u003d286,y\u003d274]"
+        "apparent_coordinate": "java.awt.Point[x\u003d128,y\u003d556]"
       },
       {
         "neighbors": [
           {
-            "neighbor": "s1"
-          },
-          {
-            "neighbor": "s3"
-          },
-          {
-            "neighbor": "s4"
+            "neighbor": "Observatorului Sud"
           }
         ]
       },
       {
         "buslines": [
           {
-            "busline": "1"
+            "busline": "46B"
           },
           {
-            "busline": "2"
+            "busline": "35"
           }
         ]
       }
     ]
   },
   {
-    "s4": [
+    "Observatorului Sud": [
       {
-        "id": "5"
+        "id": "2"
       },
       {
-        "apparent_coordinate": "java.awt.Point[x\u003d50,y\u003d558]"
+        "apparent_coordinate": "java.awt.Point[x\u003d339,y\u003d526]"
       },
       {
         "neighbors": [
           {
-            "neighbor": "s2"
+            "neighbor": "Zorilor"
+          },
+          {
+            "neighbor": "GheorgheDoja"
           }
         ]
       },
       {
         "buslines": [
           {
-            "busline": "2"
+            "busline": "46B"
+          },
+          {
+            "busline": "35"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "GheorgheDoja": [
+      {
+        "id": "3"
+      },
+      {
+        "apparent_coordinate": "java.awt.Point[x\u003d597,y\u003d459]"
+      },
+      {
+        "neighbors": [
+          {
+            "neighbor": "Observatorului Sud"
+          },
+          {
+            "neighbor": "P-ta Cipariu"
+          },
+          {
+            "neighbor": "Opera"
+          }
+        ]
+      },
+      {
+        "buslines": [
+          {
+            "busline": "46B"
+          },
+          {
+            "busline": "35"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Opera": [
+      {
+        "id": "12"
+      },
+      {
+        "apparent_coordinate": "java.awt.Point[x\u003d552,y\u003d235]"
+      },
+      {
+        "neighbors": [
+          {
+            "neighbor": "Constanta"
+          },
+          {
+            "neighbor": "GheorgheDoja"
+          }
+        ]
+      },
+      {
+        "buslines": [
+          {
+            "busline": "46B"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Constanta": [
+      {
+        "id": "8"
+      },
+      {
+        "apparent_coordinate": "java.awt.Point[x\u003d632,y\u003d77]"
+      },
+      {
+        "neighbors": [
+          {
+            "neighbor": "Somes"
+          },
+          {
+            "neighbor": "Sora"
+          },
+          {
+            "neighbor": "Opera"
+          }
+        ]
+      },
+      {
+        "buslines": [
+          {
+            "busline": "24B"
+          },
+          {
+            "busline": "46B"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Somes": [
+      {
+        "id": "9"
+      },
+      {
+        "apparent_coordinate": "java.awt.Point[x\u003d738,y\u003d71]"
+      },
+      {
+        "neighbors": [
+          {
+            "neighbor": "Constanta"
+          }
+        ]
+      },
+      {
+        "buslines": [
+          {
+            "busline": "24B"
+          },
+          {
+            "busline": "46B"
           }
         ]
       }

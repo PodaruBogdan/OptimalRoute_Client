@@ -262,7 +262,7 @@ public class MapArea extends JPanel implements MouseListener, MouseMotionListene
             if(busName!=null && !busName.equals("")) {
                 int count1=0;
                 for (StationNode neighbor : s1.getNeighbors()) {
-                    if (s1.getBuslinesPassingThrough().contains(busName)){
+                    if (neighbor.getBuslinesPassingThrough().contains(busName)){
                         count1++;
                     }
                 }
@@ -273,7 +273,7 @@ public class MapArea extends JPanel implements MouseListener, MouseMotionListene
                 }
                 int count2=0;
                 for (StationNode neighbor : s2.getNeighbors()) {
-                    if (s2.getBuslinesPassingThrough().contains(busName)){
+                    if (neighbor.getBuslinesPassingThrough().contains(busName)){
                         count2++;
                     }
                 }

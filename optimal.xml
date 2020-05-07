@@ -75,4 +75,78 @@
       </buslines>
     </station>
   </route_info>
+  <route_info>
+    <cost>990</cost>
+    <station name="Zorilor">
+      <id>1</id>
+      <apparent_coordinate>java.awt.Point[x=128,y=556]</apparent_coordinate>
+      <neighbors>
+        <neighbor>Observatorului Sud</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>46B</busline>
+        <busline>35</busline>
+      </buslines>
+    </station>
+    <station name="Observatorului Sud">
+      <id>2</id>
+      <apparent_coordinate>java.awt.Point[x=339,y=526]</apparent_coordinate>
+      <neighbors>
+        <neighbor>Zorilor</neighbor>
+        <neighbor>GheorgheDoja</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>46B</busline>
+        <busline>35</busline>
+      </buslines>
+    </station>
+    <station name="GheorgheDoja">
+      <id>3</id>
+      <apparent_coordinate>java.awt.Point[x=597,y=459]</apparent_coordinate>
+      <neighbors>
+        <neighbor>Observatorului Sud</neighbor>
+        <neighbor>P-ta Cipariu</neighbor>
+        <neighbor>Opera</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>46B</busline>
+        <busline>35</busline>
+      </buslines>
+    </station>
+    <station name="Opera">
+      <id>12</id>
+      <apparent_coordinate>java.awt.Point[x=552,y=235]</apparent_coordinate>
+      <neighbors>
+        <neighbor>Constanta</neighbor>
+        <neighbor>GheorgheDoja</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>46B</busline>
+      </buslines>
+    </station>
+    <station name="Constanta">
+      <id>8</id>
+      <apparent_coordinate>java.awt.Point[x=632,y=77]</apparent_coordinate>
+      <neighbors>
+        <neighbor>Somes</neighbor>
+        <neighbor>Sora</neighbor>
+        <neighbor>Opera</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>24B</busline>
+        <busline>46B</busline>
+      </buslines>
+    </station>
+    <station name="Somes">
+      <id>9</id>
+      <apparent_coordinate>java.awt.Point[x=738,y=71]</apparent_coordinate>
+      <neighbors>
+        <neighbor>Constanta</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>24B</busline>
+        <busline>46B</busline>
+      </buslines>
+    </station>
+  </route_info>
 </route_info>
