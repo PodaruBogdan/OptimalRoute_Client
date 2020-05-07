@@ -17,6 +17,7 @@ import java.io.ObjectOutputStream;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.Timer;
 
 public class EmployeeController2 {
     IStationNodePersistency persistency;
@@ -25,7 +26,7 @@ public class EmployeeController2 {
     private ObjectInputStream response;
     private ObjectOutputStream request;
     EditBusline editBusline;
-    public EmployeeController2(TravelerView2 travelerView, EmployeeView2 view, IStationNodePersistency persistency,ObjectInputStream ois,ObjectOutputStream oos) {
+    public EmployeeController2(TravelerView2 travelerView, EmployeeView2 view, IStationNodePersistency persistency,ObjectInputStream ois,ObjectOutputStream oos){
         this.response=ois;
         this.request=oos;
         this.view = view;
@@ -37,6 +38,7 @@ public class EmployeeController2 {
         view.getBuslineTool().AddRmvBusListener(new RmvBusListener());
         view.getBuslineTool().addEdtBusListener(new EdtBusListener());
         view.getBuslineTool().AddOptimalListener(new SearchOptimalListener());
+
     }
 
     void update(){
@@ -94,11 +96,15 @@ public class EmployeeController2 {
         return result;
     }
 
+
+
     class AddBusListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            new AddBusline(persistency);
+            MapArea.toggleEditable();
+            new AddBusline(persistency,view,travelerView);
+
         }
     }
     class EdtBusListener implements ActionListener {

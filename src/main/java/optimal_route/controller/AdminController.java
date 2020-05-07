@@ -23,15 +23,23 @@ public class AdminController {
         view.addRemoveListener(new RemoveEmployeeListener());
         view.addUpdateListener(new UpdateEmployeeListener());
         view.addListListener(new ListListener());
+        update();
+
+    }
+    void update(){
         List<Account> employeeList = null;
         try {
             employeeList = accountsPersistency.getAll();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+        DefaultListModel<String> model = ((DefaultListModel<String>)view.getList().getModel());
+        model.clear();
         for (Account acc : employeeList) {
             if (!acc.getRole().equals("admin")) {
-                ((DefaultListModel<String>)view.getList().getModel()).addElement(acc.getUsername());
+                if(!model.contains(acc.getUsername())) {
+                   model.addElement(acc.getUsername());
+                }
             }
         }
 
@@ -56,7 +64,7 @@ public class AdminController {
             }
             if(acc!=null) {
                 view.getT1().setText(acc.getRole());
-                view.getT2().setText(acc.getUsername());
+                view.getT2().setText(acc.getName());
                 view.getT3().setText(acc.getEmail());
                 view.getT4().setText(acc.getUsername());
                 view.getT5().setText(acc.getPswd());
@@ -81,17 +89,27 @@ public class AdminController {
                     break;
                 }
             }
+
             if(acc!=null) {
-                acc.setRole(view.getT1().getText());
-                acc.setName(view.getT2().getText());
-                acc.setEmail(view.getT3().getText());
-                acc.setUsername(view.getT4().getText());
-                acc.setPswd(view.getT5().getText());
                 try {
-                    accountsPersistency.update(acc);
-                } catch (RemoteException ex) {
-                    ex.printStackTrace();
+                    Account account = accountsPersistency.getByUsrName(acc.getUsername());
+                    acc.setRole(view.getT1().getText());
+                    acc.setName(view.getT2().getText());
+                    acc.setEmail(view.getT3().getText());
+                    acc.setUsername(view.getT4().getText());
+                    acc.setPswd(view.getT5().getText());
+                    account.setRole(acc.getRole());
+                    account.setName(view.getT2().getText());
+                    account.setEmail(acc.getEmail());
+                    account.setUsername(acc.getUsername());
+                    account.setPswd(acc.getPswd());
+                    accountsPersistency.update(account);
+                    update();
+
+                } catch (RemoteException remoteException) {
+                    remoteException.printStackTrace();
                 }
+
             }
         }
     }
