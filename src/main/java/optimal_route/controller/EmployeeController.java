@@ -3,6 +3,7 @@ package optimal_route.controller;
 import com.opencsv.exceptions.CsvValidationException;
 import optimal_route.contract.IStationNodePersistency;
 import optimal_route.contract.StationNode;
+import optimal_route.lang.ConcreteLangSubject;
 import optimal_route.view.*;
 import org.apache.commons.lang3.tuple.Pair;
 import report.CSVReport;
@@ -29,7 +30,9 @@ public class EmployeeController {
     private ObjectInputStream response;
     private ObjectOutputStream request;
     EditBusline editBusline;
-    public EmployeeController(TravelerView travelerView, EmployeeView view, IStationNodePersistency persistency, ObjectInputStream ois, ObjectOutputStream oos){
+    private ConcreteLangSubject langSubject;
+    public EmployeeController(TravelerView travelerView, EmployeeView view, IStationNodePersistency persistency, ObjectInputStream ois, ObjectOutputStream oos, ConcreteLangSubject langSubject){
+        this.langSubject=langSubject;
         this.response=ois;
         this.request=oos;
         this.view = view;
@@ -43,6 +46,8 @@ public class EmployeeController {
         view.getBuslineTool().AddOptimalListener(new SearchOptimalListener());
 
     }
+
+
 
     void update(){
         List<StationNode> stationNodes = null;
@@ -106,8 +111,10 @@ public class EmployeeController {
         @Override
         public void actionPerformed(ActionEvent e) {
             MapArea.toggleEditable();
-            new AddBusline(persistency,view,travelerView);
-
+            AddBusline addBusline = new AddBusline(persistency,view,travelerView);
+            langSubject.attachObserver(addBusline);
+            addBusline.setLangSubject(langSubject);
+            langSubject.notifyObservers();
         }
     }
     class EdtBusListener implements ActionListener {
@@ -119,6 +126,9 @@ public class EmployeeController {
                 if(!view.getBusLinesListing2().getList().isSelectionEmpty()) {
                     String busName = view.getBusLinesListing2().getList().getSelectedValue();
                     editBusline = new EditBusline(busName,data);
+                    langSubject.attachObserver(editBusline);
+                    editBusline.setLangSubject(langSubject);
+                    langSubject.notifyObservers();
                     editBusline.AddSetListener(new SetListener());
                 }else {
                     JOptionPane.showMessageDialog(null,"No selected busline");

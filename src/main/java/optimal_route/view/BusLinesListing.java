@@ -9,8 +9,9 @@ import java.awt.event.ActionListener;
 
 public class BusLinesListing extends JPanel {
     private JList<String> list;
-    private JLabel s1;
-    private JLabel s2;
+    private JLabel departureLabel;
+    private JLabel arrivalLabel;
+    private JLabel busLineLabel;
     private JTextField f1;
     private JTextField f2;
     private JButton search;
@@ -19,15 +20,15 @@ public class BusLinesListing extends JPanel {
     public BusLinesListing() {
         searchLine=new JTextField(20);
         search=new JButton("Search");
-        s1=new JLabel("Departure");
-        s2=new JLabel("       Arrival");
+        departureLabel =new JLabel("Departure");
+        arrivalLabel =new JLabel("       Arrival");
         f1 = new JTextField(20);
         f2 = new JTextField(20);
         JPanel p1=new JPanel();
         JPanel p2=new JPanel();
-        p1.add(s1);
+        p1.add(departureLabel);
         p1.add(f1);
-        p2.add(s2);
+        p2.add(arrivalLabel);
         p2.add(f2);
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         model = new DefaultListModel();
@@ -37,7 +38,8 @@ public class BusLinesListing extends JPanel {
         JScrollPane pane = new JScrollPane(list);
         this.add(pane);
         JPanel p = new JPanel();
-        p.add(new JLabel("Busline: "));
+        busLineLabel=new JLabel("Busline: ");
+        p.add(busLineLabel);
         p.add(searchLine);
         this.add(p);
 
@@ -98,20 +100,20 @@ public class BusLinesListing extends JPanel {
         this.list = list;
     }
 
-    public JLabel getS1() {
-        return s1;
+    public JLabel getDepartureLabel() {
+        return departureLabel;
     }
 
-    public void setS1(JLabel s1) {
-        this.s1 = s1;
+    public void setDepartureLabel(JLabel departureLabel) {
+        this.departureLabel = departureLabel;
     }
 
-    public JLabel getS2() {
-        return s2;
+    public JLabel getArrivalLabel() {
+        return arrivalLabel;
     }
 
-    public void setS2(JLabel s2) {
-        this.s2 = s2;
+    public void setArrivalLabel(JLabel arrivalLabel) {
+        this.arrivalLabel = arrivalLabel;
     }
 
     public JTextField getF1() {
@@ -137,4 +139,9 @@ public class BusLinesListing extends JPanel {
     public void setSearch(JButton search) {
         this.search = search;
     }
+
+    public JLabel getBusLineLabel() {
+        return busLineLabel;
+    }
+
 }

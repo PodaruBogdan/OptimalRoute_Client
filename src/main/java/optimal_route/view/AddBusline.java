@@ -3,6 +3,8 @@ package optimal_route.view;
 
 import optimal_route.contract.IStationNodePersistency;
 import optimal_route.contract.StationNode;
+import optimal_route.lang.ConcreteLangSubject;
+import optimal_route.lang.LangObserver;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -12,13 +14,15 @@ import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class AddBusline extends JFrame {
+public class AddBusline extends JFrame implements LangObserver {
     private MapArea mapArea;
     private NodeTool2 nodeTool2;
     private IStationNodePersistency persistency;
     private EmployeeView employeeView;
     private TravelerView travelerView;
+    private ConcreteLangSubject langSubject;
     public AddBusline(IStationNodePersistency persistency, EmployeeView view, TravelerView travelerView){
         this.employeeView=view;
         this.travelerView=travelerView;
@@ -54,7 +58,9 @@ public class AddBusline extends JFrame {
         }
         return result;
     }
-
+    public void setLangSubject(ConcreteLangSubject langSubject) {
+        this.langSubject = langSubject;
+    }
 
 
     void updateEmployeeView(){
@@ -95,6 +101,16 @@ public class AddBusline extends JFrame {
         }else{
             System.out.println("Model null!!!");
         }
+    }
+
+    @Override
+    public void update() {
+        ResourceBundle resourceBundle = langSubject.getResourceBundle(langSubject.getState());
+        nodeTool2.getAdd().setText(resourceBundle.getString("emp_add_addButton"));
+        nodeTool2.getRmv().setText(resourceBundle.getString("emp_add_removeButton"));
+        nodeTool2.getAddLink().setText(resourceBundle.getString("emp_add_addLinkButton"));
+        nodeTool2.getSave().setText(resourceBundle.getString("emp_add_saveButton"));
+        nodeTool2.getBusName().setText(resourceBundle.getString("emp_add_busNameLabel"));
     }
 
     class SaveListener implements ActionListener {

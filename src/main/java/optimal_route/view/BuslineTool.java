@@ -47,6 +47,26 @@ public class BuslineTool extends JPanel {
 
     }
 
+    public JButton getAddBus() {
+        return addBus;
+    }
+
+    public JButton getRmvBus() {
+        return rmvBus;
+    }
+
+    public JButton getEdtBus() {
+        return edtBus;
+    }
+
+    public JLabel getFrom() {
+        return from;
+    }
+
+    public JLabel getTo() {
+        return to;
+    }
+
     public void AddAddBusListener(ActionListener listener){
         addBus.addActionListener(listener);
     }

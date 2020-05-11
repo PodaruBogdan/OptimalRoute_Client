@@ -4,6 +4,7 @@ import optimal_route.contract.Account;
 import optimal_route.contract.IAccountPersistency;
 import optimal_route.contract.IStationNodePersistency;
 import optimal_route.contract.StationNode;
+import optimal_route.lang.ConcreteLangSubject;
 import optimal_route.view.*;
 
 import javax.swing.*;
@@ -27,9 +28,10 @@ public class TravelerController {
     private static Object fromServer;
     private ObjectOutputStream request ;
     private ObjectInputStream response ;
+    private ConcreteLangSubject langSubject;
 
-
-    public TravelerController(TravelerView view, IAccountPersistency accountsPersistency, IStationNodePersistency stationsPersistency, ObjectInputStream ois, ObjectOutputStream oos){
+    public TravelerController(TravelerView view, IAccountPersistency accountsPersistency, IStationNodePersistency stationsPersistency, ObjectInputStream ois, ObjectOutputStream oos, ConcreteLangSubject langSubject){
+        this.langSubject=langSubject;
         this.response=ois;
         this.request=oos;
         this.view=view;
@@ -122,9 +124,18 @@ public class TravelerController {
             for(Account account:accountList){
                 if(account.getUsername().equals(view.getLoginArea().getUsrField().getText()) && account.getPswd().equals(view.getLoginArea().getPswField().getText())){
                     if(account.getRole().equals("admin")) {
-                        new AdminController(new AdminView(),accountsPersistency);
-                    }else
-                        new EmployeeController(view,new EmployeeView(),stationsPersistency,response,request);
+                        AdminView adminView = new AdminView();
+                        langSubject.attachObserver(adminView);
+                        adminView.setLangSubject(langSubject);
+                        langSubject.notifyObservers();
+                        new AdminController(adminView,accountsPersistency);
+                    }else {
+                        EmployeeView employeeView = new EmployeeView();
+                        langSubject.attachObserver(employeeView);
+                        employeeView.setLangSubject(langSubject);
+                        langSubject.notifyObservers();
+                        new EmployeeController(view, employeeView, stationsPersistency, response, request,langSubject);
+                    }
                     break;
                 }
             }

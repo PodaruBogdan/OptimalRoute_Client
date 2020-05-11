@@ -2,13 +2,19 @@ package optimal_route.view;
 
 
 
+import optimal_route.lang.ConcreteLangSubject;
+import optimal_route.lang.LangObserver;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ResourceBundle;
 
-public class EmployeeView extends JFrame {
+public class EmployeeView extends JFrame implements LangObserver {
     private BuslineTool buslineTool;
     private BusLinesArea busLineArea;
     private BusLinesListing2 busLinesListing2;
+    private ConcreteLangSubject langSubject;
+
     public EmployeeView() {
 
         this.setTitle("Content creation");
@@ -40,5 +46,21 @@ public class EmployeeView extends JFrame {
 
     public BuslineTool getBuslineTool() {
         return buslineTool;
+    }
+
+    public void setLangSubject(ConcreteLangSubject langSubject) {
+        this.langSubject = langSubject;
+    }
+
+    @Override
+    public void update() {
+        ResourceBundle resourceBundle = langSubject.getResourceBundle(langSubject.getState());
+        busLinesListing2.getSearchLabel().setText(resourceBundle.getString("emp_searchLabel"));
+        buslineTool.getTo().setText(resourceBundle.getString("emp_toLabel"));
+        buslineTool.getFrom().setText(resourceBundle.getString("emp_fromLabel"));
+        buslineTool.getSearchOptimal().setText(resourceBundle.getString("emp_reportButton"));
+        buslineTool.getAddBus().setText(resourceBundle.getString("emp_addButton"));
+        buslineTool.getRmvBus().setText(resourceBundle.getString("emp_removeButton"));
+        buslineTool.getEdtBus().setText(resourceBundle.getString("emp_updateButton"));
     }
 }

@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 
 public class BusLinesListing2 extends JPanel {
     private JList<String> list;
-
+    private JLabel searchLabel;
     private JTextField searchLine;
     private DefaultListModel model;
     public BusLinesListing2() {
@@ -26,7 +26,8 @@ public class BusLinesListing2 extends JPanel {
         JScrollPane pane = new JScrollPane(list);
         this.add(pane);
         JPanel p = new JPanel();
-        p.add(new JLabel("Search: "));
+        searchLabel = new JLabel("Search: ");
+        p.add(searchLabel);
         p.add(searchLine);
         this.add(p);
 
@@ -77,7 +78,9 @@ public class BusLinesListing2 extends JPanel {
         }
     }
 
-
+    public JLabel getSearchLabel() {
+        return searchLabel;
+    }
 
     public void setList(JList<String> list) {
         this.list = list;

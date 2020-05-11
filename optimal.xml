@@ -149,4 +149,80 @@
       </buslines>
     </station>
   </route_info>
+  <route_info>
+    <cost>368</cost>
+    <station name="Taberei">
+      <id>10</id>
+      <apparent_coordinate>java.awt.Point[x=71,y=109]</apparent_coordinate>
+      <neighbors>
+        <neighbor>Fabrica de bere</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>24B</busline>
+      </buslines>
+    </station>
+    <station name="Fabrica de bere">
+      <id>11</id>
+      <apparent_coordinate>java.awt.Point[x=265,y=125]</apparent_coordinate>
+      <neighbors>
+        <neighbor>Taberei</neighbor>
+        <neighbor>Sora</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>24B</busline>
+      </buslines>
+    </station>
+    <station name="Sora">
+      <id>6</id>
+      <apparent_coordinate>java.awt.Point[x=437,y=95]</apparent_coordinate>
+      <neighbors>
+        <neighbor>P-ta Avram Iancu</neighbor>
+        <neighbor>Central</neighbor>
+        <neighbor>Constanta</neighbor>
+        <neighbor>Fabrica de bere</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>24B</busline>
+        <busline>35</busline>
+      </buslines>
+    </station>
+  </route_info>
+  <route_info>
+    <cost>368</cost>
+    <station name="Taberei">
+      <id>10</id>
+      <apparent_coordinate>java.awt.Point[x=71,y=109]</apparent_coordinate>
+      <neighbors>
+        <neighbor>Fabrica de bere</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>24B</busline>
+      </buslines>
+    </station>
+    <station name="Fabrica de bere">
+      <id>11</id>
+      <apparent_coordinate>java.awt.Point[x=265,y=125]</apparent_coordinate>
+      <neighbors>
+        <neighbor>Taberei</neighbor>
+        <neighbor>Sora</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>24B</busline>
+      </buslines>
+    </station>
+    <station name="Sora">
+      <id>6</id>
+      <apparent_coordinate>java.awt.Point[x=437,y=95]</apparent_coordinate>
+      <neighbors>
+        <neighbor>P-ta Avram Iancu</neighbor>
+        <neighbor>Central</neighbor>
+        <neighbor>Constanta</neighbor>
+        <neighbor>Fabrica de bere</neighbor>
+      </neighbors>
+      <buslines>
+        <busline>24B</busline>
+        <busline>35</busline>
+      </buslines>
+    </station>
+  </route_info>
 </route_info>

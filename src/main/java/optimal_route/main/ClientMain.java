@@ -4,8 +4,12 @@ import optimal_route.contract.IAccountPersistency;
 import optimal_route.contract.IStationNodePersistency;
 import optimal_route.controller.TravelerController;
 
+import optimal_route.lang.ConcreteLangSubject;
 import optimal_route.view.TravelerView;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
@@ -32,8 +36,13 @@ public class ClientMain {
 
             IAccountPersistency stub = (IAccountPersistency) registry.lookup("optimal_route.contract.IAccountPersistency");
             IStationNodePersistency stubStationNodes = (IStationNodePersistency) registry.lookup("optimal_route.contract.IStationNodePersistency");
-
-            new TravelerController(new TravelerView(stubStationNodes),stub,stubStationNodes,response,request);
+            ConcreteLangSubject langSubject = new ConcreteLangSubject();
+            TravelerView travelerView = new TravelerView(stubStationNodes);
+            langSubject.attachObserver(travelerView);
+            travelerView.setLangSubject(langSubject);
+            LangListener langListener = new LangListener(langSubject,travelerView.getLangList());
+            travelerView.setLangListener(langListener);
+            new TravelerController(travelerView,stub,stubStationNodes,response,request,langSubject);
             Scanner s = new Scanner(System.in);
             while (!s.next().equals("stop")) ;
            System.exit(0);
@@ -43,6 +52,7 @@ public class ClientMain {
             e.printStackTrace();
         }
     }
+
 
 
 }

@@ -1,10 +1,14 @@
 package optimal_route.view;
+import optimal_route.lang.ConcreteLangSubject;
+import optimal_route.lang.LangObserver;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ResourceBundle;
 
-public class AdminView extends JFrame {
+public class AdminView extends JFrame implements LangObserver {
     private JButton add;
     private JButton rmv;
     private JButton upd;
@@ -12,6 +16,7 @@ public class AdminView extends JFrame {
     private JLabel l1,l2,l3,l4,l5;
     private JTextField t1,t2,t3,t4,t5;
     private JList<String> list;
+    private ConcreteLangSubject langSubject;
     public AdminView() {
         this.setTitle("Employee administration");
         add = new JButton("Add new employee");
@@ -190,4 +195,20 @@ public class AdminView extends JFrame {
         list.addListSelectionListener(listener);
     }
 
+    public void setLangSubject(ConcreteLangSubject langSubject) {
+        this.langSubject = langSubject;
+    }
+
+    @Override
+    public void update() {
+        ResourceBundle resourceBundle = langSubject.getResourceBundle(langSubject.getState());
+        add.setText(resourceBundle.getString("adm_addButton"));
+        rmv.setText(resourceBundle.getString("adm_removeButton"));
+        upd.setText(resourceBundle.getString("adm_updateButton"));
+        l1.setText(resourceBundle.getString("adm_roleLabel"));
+        l2.setText(resourceBundle.getString("adm_nameLabel"));
+        l3.setText(resourceBundle.getString("adm_emailLabel"));
+        l4.setText(resourceBundle.getString("adm_usernameLabel"));
+        l5.setText(resourceBundle.getString("adm_passwordLabel"));
+    }
 }

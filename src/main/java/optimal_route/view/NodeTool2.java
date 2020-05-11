@@ -10,6 +10,7 @@ public class NodeTool2 extends JPanel {
     private JButton rmv;
     private JButton save;
     private JTextField textField;
+    private JLabel busName;
     public NodeTool2(){
 
         addLink = new JButton("Add link");
@@ -19,7 +20,8 @@ public class NodeTool2 extends JPanel {
         textField=new JTextField(10);
 
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-        this.add(new JLabel("Busline name: "));
+        busName = new JLabel("Busline name: ");
+        this.add(busName);
         this.add(textField);
         this.add(add);
         this.add(rmv);
@@ -53,7 +55,23 @@ public class NodeTool2 extends JPanel {
         addLink.addActionListener(listener);
     }
 
+    public JLabel getBusName() {
+        return busName;
+    }
 
+    public JButton getAddLink() {
+        return addLink;
+    }
 
+    public JButton getAdd() {
+        return add;
+    }
 
+    public JButton getRmv() {
+        return rmv;
+    }
+
+    public JButton getSave() {
+        return save;
+    }
 }
